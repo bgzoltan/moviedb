@@ -27,11 +27,12 @@ export interface IMovies {
 
 const MoviesList = () => {
   const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState("_");
   const [page, setPage] = useState(1);
   const [favourites, setFavourites] = useState<string[]>(
     localStorage.getItem("Favourites")?.split(",") ?? []
   );
+  const [showMovies, setShowMovies] = useState(false);
 
   const override: CSSProperties = {
     display: "block",
@@ -46,11 +47,9 @@ const MoviesList = () => {
   };
 
   const { isLoading, data, isError, error, isSuccess, refetch } = useQuery(
-    ["movies"],
+    ["movies", searchInput],
     fetchMovies,
-    {
-      enabled: true
-    }
+    { enabled: false }
   );
 
   useEffect(() => {
@@ -68,6 +67,7 @@ const MoviesList = () => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
         refetch();
+        setShowMovies(true);
       }
     };
     document.addEventListener("keydown", enterHandler);
@@ -76,6 +76,12 @@ const MoviesList = () => {
     };
   }, [refetch]);
 
+  if (isError) {
+    if (error instanceof Error) {
+      return <h2>Hiba történt {error.message}</h2>;
+    }
+  }
+
   return (
     <>
       <div className="flex justify-center border-black border-solid border-2 w-full">
@@ -83,13 +89,14 @@ const MoviesList = () => {
           searchInput={searchInput}
           setSearchInput={setSearchInput}
           setPage={setPage}
+          setShowMovies={setShowMovies}
         />
       </div>
 
-      <div className="flex flex-row items w-full h-screen">
-        <div className="flex flex-col items-center w-1/2 bg-blue-200">
+      <div className="flex flex-col lg:flex-row items w-full h-screen">
+        <div className="flex flex-col items-center w-full lg:w-1/2 bg-blue-200">
           <h2 className="titles">List of movies</h2>
-          {isLoading && (
+          {isLoading && searchInput !== "" && (
             <DotLoader
               color={"blue"}
               loading={true}
@@ -97,7 +104,8 @@ const MoviesList = () => {
               size={60}
             />
           )}
-          {searchInput !== "" ? (
+          {!isSuccess && <div>Nincs ilyen adat vagy hiba történt...</div>}
+          {showMovies && (
             <div className="flex flex-col items-center w-full">
               {data?.data.results.map((movie: IMovies) => (
                 <div key={movie.id}>
@@ -105,13 +113,11 @@ const MoviesList = () => {
                 </div>
               ))}
             </div>
-          ) : (
-            <div>Type a testx in seacr bar...</div>
           )}
           <Pagination page={page} setPage={setPage} />
         </div>
 
-        <div className="w-1/2 bg-blue-100">
+        <div className="w-full lg:w-1/2 bg-blue-100">
           <Favourites
             favourites={favourites}
             setFavourites={setFavourites}

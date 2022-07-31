@@ -30,9 +30,9 @@ const Favourites = ({
   return (
     <div className="flex flex-col items-center">
       <h2 className="titles">Your favourites</h2>
-      <div className="overflow-auto max-h-96">
-        {favourites?.map((favourite) => (
-          <div className="">{favourite}</div>
+      <div className="flex flex-col items-center overflow-y-scroll max-h-[32rem] w-full">
+        {favourites?.map((favourite, index) => (
+          <div key={index}>{favourite}</div>
         ))}
       </div>
 
