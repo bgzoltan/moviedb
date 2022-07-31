@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import Search from "./Search";
 
 const MoviesList = () => {
   const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
@@ -30,6 +31,11 @@ const MoviesList = () => {
   return (
     <div>
       <h2 className="text-2xl text-gray-400">List of movies</h2>
+      <Search
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        setPage={setPage}
+      />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import MoviesList from "./components/MoviesList";
 
 function App() {
   const queryClient = new QueryClient();
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex flex-col items-center font-bold h-screen box-border p-0 m-0">
