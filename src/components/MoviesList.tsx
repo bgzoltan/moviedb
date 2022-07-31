@@ -5,6 +5,8 @@ import Favourites from "./Favourites";
 import MovieItem from "./MovieItem";
 import Pagination from "./Pagination";
 import Search from "./Search";
+import { CSSProperties } from "react";
+import DotLoader from "react-spinners/DotLoader";
 
 export interface IMovies {
   adult: boolean;
@@ -30,6 +32,12 @@ const MoviesList = () => {
   const [favourites, setFavourites] = useState<string[]>(
     localStorage.getItem("Favourites")?.split(",") ?? []
   );
+
+  const override: CSSProperties = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "blue"
+  };
 
   const fetchMovies = () => {
     return axios.get(
@@ -68,10 +76,6 @@ const MoviesList = () => {
     };
   }, [refetch]);
 
-  if (isLoading && searchInput !== "") {
-    return <h3>Loading...</h3>;
-  }
-
   return (
     <>
       <div className="flex justify-center border-black border-solid border-2 w-full">
@@ -85,6 +89,14 @@ const MoviesList = () => {
       <div className="flex flex-row items w-full h-screen">
         <div className="flex flex-col items-center w-1/2 bg-blue-200">
           <h2 className="titles">List of movies</h2>
+          {isLoading && (
+            <DotLoader
+              color={"blue"}
+              loading={true}
+              cssOverride={override}
+              size={60}
+            />
+          )}
           {searchInput !== "" ? (
             <div className="flex flex-col items-center w-full">
               {data?.data.results.map((movie: IMovies) => (
