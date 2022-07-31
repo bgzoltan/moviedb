@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Favourites from "./Favourites";
 import MovieItem from "./MovieItem";
 import Pagination from "./Pagination";
 import Search from "./Search";
@@ -26,6 +27,9 @@ const MoviesList = () => {
   const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
   const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
+  const [favourites, setFavourites] = useState<string[]>(
+    localStorage.getItem("Favourites")?.split(",") ?? []
+  );
 
   const fetchMovies = () => {
     return axios.get(
@@ -76,6 +80,7 @@ const MoviesList = () => {
         setSearchInput={setSearchInput}
         setPage={setPage}
       />
+      <div></div>
       {searchInput && (
         <div className="flex flex-col items-center w-full">
           {data?.data.results.map((movie: IMovies) => (
@@ -86,6 +91,12 @@ const MoviesList = () => {
         </div>
       )}
       <Pagination page={page} setPage={setPage} />
+
+      <Favourites
+        favourites={favourites}
+        setFavourites={setFavourites}
+        movieList={data?.data.results}
+      />
     </>
   );
 };
