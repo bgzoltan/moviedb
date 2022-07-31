@@ -29,7 +29,7 @@ const MoviesList = () => {
 
   const fetchMovies = () => {
     return axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query="${searchInput}"&language=en-US&page=${page}&include_adult=false`
+      `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}`
     );
   };
 
@@ -47,13 +47,29 @@ const MoviesList = () => {
     }
   }, [refetch, searchInput, page]);
 
-  console.log(isLoading);
+  useEffect(() => {
+    refetch();
+  }, [page, refetch]);
+
+  useEffect(() => {
+    const enterHandler = (event: KeyboardEvent) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        refetch();
+      }
+    };
+    document.addEventListener("keydown", enterHandler);
+    return () => {
+      document.removeEventListener("keydown", enterHandler);
+    };
+  }, [refetch]);
+
   if (isLoading && searchInput !== "") {
     return <h3>Loading...</h3>;
   }
 
   return (
-    <div>
+    <>
       <h2 className="text-2xl text-gray-400">List of movies</h2>
       <Search
         searchInput={searchInput}
@@ -61,7 +77,7 @@ const MoviesList = () => {
         setPage={setPage}
       />
       {searchInput && (
-        <div>
+        <div className="flex flex-col items-center w-full">
           {data?.data.results.map((movie: IMovies) => (
             <div key={movie.id}>
               <MovieItem {...movie} />
@@ -70,7 +86,7 @@ const MoviesList = () => {
         </div>
       )}
       <Pagination page={page} setPage={setPage} />
-    </div>
+    </>
   );
 };
 

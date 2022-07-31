@@ -5,7 +5,7 @@ export interface IPaginationProps {
 
 const Pagination = ({ page, setPage }: IPaginationProps) => {
   return (
-    <div className="flex w-full">
+    <div className="flex">
       <button
         className="paging-buttons"
         onClick={() => setPage(page - 1 > 0 ? page - 1 : page)}
