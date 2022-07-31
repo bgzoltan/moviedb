@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieItem from "./MovieItem";
+import Pagination from "./Pagination";
 import Search from "./Search";
 
 export interface IMovies {
@@ -40,11 +41,16 @@ const MoviesList = () => {
     }
   );
 
+  useEffect(() => {
+    if (searchInput.length >= 3) {
+      refetch();
+    }
+  }, [refetch, searchInput, page]);
+
+  console.log(isLoading);
   if (isLoading && searchInput !== "") {
     return <h3>Loading...</h3>;
   }
-
-  console.log(data);
 
   return (
     <div>
@@ -63,6 +69,7 @@ const MoviesList = () => {
           ))}
         </div>
       )}
+      <Pagination page={page} setPage={setPage} />
     </div>
   );
 };
