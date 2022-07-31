@@ -1,7 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import MovieItem from "./MovieItem";
 import Search from "./Search";
+
+export interface IMovies {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
 
 const MoviesList = () => {
   const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
@@ -36,6 +54,15 @@ const MoviesList = () => {
         setSearchInput={setSearchInput}
         setPage={setPage}
       />
+      {searchInput && (
+        <div>
+          {data?.data.results.map((movie: IMovies) => (
+            <div key={movie.id}>
+              <MovieItem {...movie} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
