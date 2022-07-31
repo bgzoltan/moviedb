@@ -5,11 +5,41 @@
 @layer utilities {
   .paging-buttons {
     color: white;
-    background-color: grey;
+    background-color: darkblue;
     border-radius: 0.5rem;
-    border: 1px solid black;
+    border: 1px solid darkblue;
     margin: 0.5rem 0 0.5rem 0;
     padding: 0.5rem;
+  }
+
+  .paging-buttons:hover, .favourite-buttons:hover {
+    color: red;
+    border: solid 1px lightblue;
+  }
+
+  .favourite-buttons {
+    color: white;
+    background-color: darkblue;
+    border-radius: 0.5rem;
+    border: 1px solid darkblue;
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .titles{
+    text-align:center;
+    font-size: 32px;
+    color: blue;
+
+  }
+
+  .main-title{
+    text-align:center;
+    font-size: 42px;
+    color: white;
+    background-color: blue;
+    width: 100%;
+
   }
 }
 

@@ -9,9 +9,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex flex-col items-center font-bold h-screen box-border p-0 m-0">
-        <h1 className="text-5xl text-white bg-gray-400 w-full text-center">
-          Hello MovieDB!
-        </h1>
+        <h1 className="main-title">TheMovieDB</h1>
         <MoviesList />
       </div>
     </QueryClientProvider>

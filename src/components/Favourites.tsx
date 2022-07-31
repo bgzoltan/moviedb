@@ -11,28 +11,39 @@ const Favourites = ({
   setFavourites,
   movieList
 }: IFavouritesProps) => {
-  console.log("List...", movieList);
   const storeFavourite = () => {
-    const favourites = movieList.map((movie: IMovies) => {
+    const newFavourites = movieList.map((movie: IMovies) => {
       return movie.original_title;
     });
-    console.log(favourites);
-    localStorage.setItem("Favourites", favourites.join());
+    setFavourites([...favourites, ...newFavourites]);
+    localStorage.setItem(
+      "Favourites",
+      [...favourites, ...newFavourites].join()
+    );
   };
 
-  const listFavourite = () => {
-    const newFavourites = localStorage?.getItem("Favourites")?.split("," ?? []);
-    setFavourites(newFavourites ?? []);
+  const emptyFavourite = () => {
+    localStorage.setItem("Favourites", "");
+    setFavourites([]);
   };
 
   return (
-    <div>
-      <h2>Favourites</h2>
-      <button onClick={storeFavourite}>Store as favourite</button>
-      <button onClick={listFavourite}>List your favourite</button>
-      {favourites?.map((favourite) => (
-        <div>{favourite}</div>
-      ))}
+    <div className="flex flex-col items-center">
+      <h2 className="titles">Your favourites</h2>
+      <div className="overflow-auto max-h-96">
+        {favourites?.map((favourite) => (
+          <div className="">{favourite}</div>
+        ))}
+      </div>
+
+      <div>
+        <button className="favourite-buttons" onClick={storeFavourite}>
+          Store as favourite
+        </button>
+        <button className="favourite-buttons" onClick={emptyFavourite}>
+          Empty your favourites
+        </button>
+      </div>
     </div>
   );
 };

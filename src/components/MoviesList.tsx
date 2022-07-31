@@ -74,29 +74,39 @@ const MoviesList = () => {
 
   return (
     <>
-      <h2 className="text-2xl text-gray-400">List of movies</h2>
-      <Search
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        setPage={setPage}
-      />
-      <div></div>
-      {searchInput && (
-        <div className="flex flex-col items-center w-full">
-          {data?.data.results.map((movie: IMovies) => (
-            <div key={movie.id}>
-              <MovieItem {...movie} />
-            </div>
-          ))}
-        </div>
-      )}
-      <Pagination page={page} setPage={setPage} />
+      <div className="flex justify-center border-black border-solid border-2 w-full">
+        <Search
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          setPage={setPage}
+        />
+      </div>
 
-      <Favourites
-        favourites={favourites}
-        setFavourites={setFavourites}
-        movieList={data?.data.results}
-      />
+      <div className="flex flex-row items w-full h-screen">
+        <div className="flex flex-col items-center w-1/2 bg-blue-200">
+          <h2 className="titles">List of movies</h2>
+          {searchInput !== "" ? (
+            <div className="flex flex-col items-center w-full">
+              {data?.data.results.map((movie: IMovies) => (
+                <div key={movie.id}>
+                  <MovieItem {...movie} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>Type a testx in seacr bar...</div>
+          )}
+          <Pagination page={page} setPage={setPage} />
+        </div>
+
+        <div className="w-1/2 bg-blue-100">
+          <Favourites
+            favourites={favourites}
+            setFavourites={setFavourites}
+            movieList={data?.data.results}
+          />
+        </div>
+      </div>
     </>
   );
 };
