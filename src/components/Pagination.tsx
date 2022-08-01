@@ -15,7 +15,7 @@ const Pagination = ({ page, setPage }: IPaginationProps) => {
         Previous
       </button>
       <div className="flex flex-col justify-center items-center w-20">
-        <div>Oldal:{page}</div>
+        <div>Page - {page}</div>
       </div>
       <button
         className="paging-buttons"

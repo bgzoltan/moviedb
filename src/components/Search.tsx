@@ -35,7 +35,9 @@ const Search = ({
         onChange={(e) => handleChange(e.target.value)}
       />
       {searchInput.length < 3 && (
-        <div>3 karaktert kérek vagy nyomj Enter-t!</div>
+        <div>
+          Min. 3 karaktert kérek vagy min. 1 karakter után nyomj Enter-t!
+        </div>
       )}
     </div>
   );
