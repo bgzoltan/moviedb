@@ -27,12 +27,13 @@ export interface IMovies {
 
 const MoviesList = () => {
   const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
-  const [searchInput, setSearchInput] = useState("_");
+  const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const [favourites, setFavourites] = useState<string[]>(
     localStorage.getItem("Favourites")?.split(",") ?? []
   );
   const [showMovies, setShowMovies] = useState(false);
+  const [fetchEnabled, setFetchEnable] = useState(false);
 
   const override: CSSProperties = {
     display: "block",
@@ -40,34 +41,26 @@ const MoviesList = () => {
     borderColor: "blue"
   };
 
-  const fetchMovies = () => {
+  const fetchMovies = (page: number) => {
     return axios.get(
       `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}`
     );
   };
 
-  const { isLoading, data, isError, error, isSuccess, refetch } = useQuery(
-    ["movies", searchInput],
-    fetchMovies,
-    { enabled: false }
-  );
-
-  useEffect(() => {
-    if (searchInput.length >= 3) {
-      refetch();
-    }
-  }, [refetch, searchInput, page]);
-
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
+  const { isLoading, data, isError, error, refetch } = useQuery({
+    queryKey: ["posts", fetchEnabled, page],
+    queryFn: () => fetchMovies(page),
+    enabled: !!fetchEnabled
+  });
 
   useEffect(() => {
     const enterHandler = (event: KeyboardEvent) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
-        refetch();
+        setFetchEnable(true);
         setShowMovies(true);
+      } else {
+        setFetchEnable(false);
       }
     };
     document.addEventListener("keydown", enterHandler);
@@ -90,13 +83,14 @@ const MoviesList = () => {
           setSearchInput={setSearchInput}
           setPage={setPage}
           setShowMovies={setShowMovies}
+          setFetchEnable={setFetchEnable}
         />
       </div>
 
       <div className="flex flex-col lg:flex-row items w-full h-screen">
         <div className="flex flex-col items-center w-full lg:w-1/2 bg-blue-200">
           <h2 className="titles">List of movies</h2>
-          {isLoading && searchInput !== "" && (
+          {isLoading && (
             <DotLoader
               color={"blue"}
               loading={true}
@@ -104,7 +98,9 @@ const MoviesList = () => {
               size={60}
             />
           )}
-          {!isSuccess && <div>Nincs ilyen adat vagy hiba történt...</div>}
+          {searchInput.length < 3 && (
+            <div>3 karaktert kérek vagy nyomj Enter-t!</div>
+          )}
           {showMovies && (
             <div className="flex flex-col items-center w-full">
               {data?.data.results.map((movie: IMovies) => (

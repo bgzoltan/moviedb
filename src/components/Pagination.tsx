@@ -8,7 +8,9 @@ const Pagination = ({ page, setPage }: IPaginationProps) => {
     <div className="flex">
       <button
         className="paging-buttons"
-        onClick={() => setPage(page - 1 > 0 ? page - 1 : page)}
+        onClick={() => {
+          setPage(() => page - 1);
+        }}
       >
         Previous
       </button>
@@ -17,7 +19,9 @@ const Pagination = ({ page, setPage }: IPaginationProps) => {
       </div>
       <button
         className="paging-buttons"
-        onClick={() => setPage(page + 1 < 1000 ? page + 1 : page)}
+        onClick={() => {
+          setPage(() => page + 1);
+        }}
       >
         Next
       </button>

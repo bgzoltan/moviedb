@@ -5,21 +5,25 @@ export interface ISearch {
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   setShowMovies: React.Dispatch<React.SetStateAction<boolean>>;
+  setFetchEnable: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Search = ({
   searchInput,
   setSearchInput,
   setPage,
-  setShowMovies
+  setShowMovies,
+  setFetchEnable
 }: ISearch) => {
   const handleChange = (searchItem: string) => {
     setSearchInput(searchItem);
     setPage(1);
     if (searchItem.length >= 3) {
       setShowMovies(true);
+      setFetchEnable(true);
     } else {
       setShowMovies(false);
+      setFetchEnable(false);
     }
   };
 
