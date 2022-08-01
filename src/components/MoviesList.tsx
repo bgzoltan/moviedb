@@ -43,7 +43,7 @@ const MoviesList = () => {
 
   const fetchMovies = (page: number) => {
     return axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}`
+      `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}&language=en-US&page=1&include_adult=false`
     );
   };
 
@@ -98,9 +98,7 @@ const MoviesList = () => {
               size={60}
             />
           )}
-          {searchInput.length < 3 && (
-            <div>3 karaktert kérek vagy nyomj Enter-t!</div>
-          )}
+
           {showMovies && (
             <div className="flex flex-col items-center w-full">
               {data?.data.results.map((movie: IMovies) => (

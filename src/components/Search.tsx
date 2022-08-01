@@ -34,6 +34,9 @@ const Search = ({
         className="border-black border-solid border-[1px] mb-4 bg-slate-50 shadow-lg p-1 rounded-md"
         onChange={(e) => handleChange(e.target.value)}
       />
+      {searchInput.length < 3 && (
+        <div>3 karaktert kérek vagy nyomj Enter-t!</div>
+      )}
     </div>
   );
 };
