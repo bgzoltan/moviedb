@@ -1,8 +1,7 @@
 import { useState, useEffect} from "react";
-import Favourites from "./Favourites";
+
 import MovieItem from "./MovieItem";
 import Pagination from "./Pagination";
-import Search from "./Search";
 import { CSSProperties } from "react";
 import DotLoader from "react-spinners/DotLoader";
 
@@ -23,17 +22,20 @@ export interface IMovies {
   vote_count: number;
 }
 
-const MoviesList = () => {
-  const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
-  const [searchInput, setSearchInput] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading]=useState(false);
-  const [favourites, setFavourites] = useState<string[]>(
-    localStorage.getItem("favourites")?.split(",") ?? []
-  );
-  const [showMovies, setShowMovies] = useState(false);
+type MoviesListProps ={
+  searchInput:string;
+  page:number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  showMovies:boolean;
+  setShowMovies: React.Dispatch<React.SetStateAction<boolean>>;
+  movies:never[];
+  setMovies:React.Dispatch<React.SetStateAction<never[]>>;
+  
+}
 
+const MoviesList = ({searchInput,page,setPage,showMovies,setShowMovies,movies,setMovies}:MoviesListProps) => {
+  const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
+  const [isLoading, setIsLoading]=useState(false);
   const override: CSSProperties = {
     display: "block",
     margin: "0 auto",
@@ -45,7 +47,7 @@ const MoviesList = () => {
       try {
         setIsLoading(true);
         const response = await fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}&language=en-US&include_adult=false`
+          `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}`
         );
   
         if (response.status >= 400 && response.status < 600) {
@@ -53,7 +55,6 @@ const MoviesList = () => {
         }
         const data = await response.json();
         setMovies(data.results);
-        setShowMovies(true);
         setIsLoading(false);
   
       } catch (e) {
@@ -64,22 +65,11 @@ const MoviesList = () => {
       fetchMovies(page);
     }
 
-  }, [setMovies, page, searchInput, showMovies])
+  }, [setMovies, page, searchInput, showMovies, setShowMovies])
 
   return (
     <>
-      <div className="flex justify-center border-black border-solid border-2 w-full">
-        <Search
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          setPage={setPage}
-          setShowMovies={setShowMovies}
-      
-        />
-      </div>
-
-      <div className="flex flex-col lg:flex-row items w-full h-screen">
-        <div className="flex flex-col items-center w-full lg:w-1/2 bg-blue-200">
+      <div className="flex flex-col items-center lg:w-1/2 h-full bg-blue-200 border-solid border-black border-[3px]">
           <h2 className="titles">List of movies</h2>
 
           {isLoading && (
@@ -92,7 +82,7 @@ const MoviesList = () => {
           )}
 
           {showMovies && (
-            <div className="flex flex-col items-center w-full">
+            <div className="flex flex-col items-center w-full grow">
               {movies.map((movie: IMovies) => (
                 <div key={movie.id}>
                   <MovieItem {...movie} />
@@ -101,15 +91,6 @@ const MoviesList = () => {
             </div>
           )}
           <Pagination page={page} setPage={setPage} />
-        </div>
-
-        <div className="w-full lg:w-1/2 bg-blue-100">
-          <Favourites
-            favourites={favourites}
-            setFavourites={setFavourites}
-            movieList={movies}
-          />
-        </div>
       </div>
     </>
   );

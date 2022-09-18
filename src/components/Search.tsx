@@ -38,15 +38,15 @@ const Search = ({
   }, [setShowMovies]);
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="titles">Search your movie</h2>
+    <div className="flex flex-col items-center w-full">
+      <h2 className="titles">Search a movie title</h2>
       <input
-        className="border-black border-solid border-[1px] mb-4 bg-slate-50 shadow-lg p-1 rounded-md"
+        className="border-black border-solid border-[1px]  bg-slate-50 shadow-lg p-1 m-2 rounded-md"
         onChange={(e) => handleChange(e.target.value)}
       />
       {searchInput.length < 3 && (
         <div>
-          Min. 3 karaktert kérek vagy min. 1 karakter után nyomj Enter-t!
+          Min. 3 letters or press Enter after the letters!
         </div>
       )}
     </div>

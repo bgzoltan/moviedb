@@ -5,7 +5,7 @@ type PaginationProps= {
 
 const Pagination = ({ page, setPage }: PaginationProps) => {
   return (
-    <div className="flex">
+    <div className="flex flex-none">
       <button
         className="paging-buttons transition-all duration-700 "
         onClick={() => {
