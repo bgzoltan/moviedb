@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 type ISearchProp= {
   searchInput: string;
@@ -23,6 +23,19 @@ const Search = ({
       setShowMovies(false);
     }
   };
+
+  useEffect(() => {
+    const enterHandler = (event: KeyboardEvent) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        setShowMovies(true);  
+      }
+    };
+    document.addEventListener("keydown", enterHandler);
+    return () => {
+      document.removeEventListener("keydown", enterHandler);
+    };
+  }, [setShowMovies]);
 
   return (
     <div className="flex flex-col items-center">
