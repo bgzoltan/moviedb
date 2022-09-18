@@ -1,9 +1,9 @@
-export interface IPaginationProps {
+type PaginationProps= {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Pagination = ({ page, setPage }: IPaginationProps) => {
+const Pagination = ({ page, setPage }: PaginationProps) => {
   return (
     <div className="flex">
       <button

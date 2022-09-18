@@ -40,8 +40,6 @@ const MoviesList = () => {
     borderColor: "blue"
   };
 
-  console.log(favourites);
-
   useEffect(() => {
     const fetchMovies= async (page:number)=>{
       try {
@@ -83,6 +81,7 @@ const MoviesList = () => {
       <div className="flex flex-col lg:flex-row items w-full h-screen">
         <div className="flex flex-col items-center w-full lg:w-1/2 bg-blue-200">
           <h2 className="titles">List of movies</h2>
+
           {isLoading && (
             <DotLoader
               color={"blue"}

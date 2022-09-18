@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { IMovies } from "./MoviesList";
 
-export interface IFavouritesProps {
+type FavouritesProps= {
   favourites: string[];
   setFavourites: React.Dispatch<React.SetStateAction<string[]>>;
   movieList: IMovies[];
@@ -11,7 +11,7 @@ const Favourites = ({
   favourites,
   setFavourites,
   movieList
-}: IFavouritesProps) => {
+}: FavouritesProps) => {
 
 
   const storeFavourite = () => {

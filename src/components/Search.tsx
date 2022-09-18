@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-type ISearchProp= {
+type SearchProp= {
   searchInput: string;
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
@@ -12,7 +12,7 @@ const Search = ({
   setSearchInput,
   setPage,
   setShowMovies,
-}: ISearchProp) => {
+}: SearchProp) => {
 
   const handleChange = (searchItem: string) => {
     setSearchInput(searchItem);
