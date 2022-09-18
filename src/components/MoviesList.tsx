@@ -30,7 +30,7 @@ const MoviesList = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading]=useState(false);
   const [favourites, setFavourites] = useState<string[]>(
-    localStorage.getItem("Favourites")?.split(",") ?? []
+    localStorage.getItem("favourites")?.split(",") ?? []
   );
   const [showMovies, setShowMovies] = useState(false);
 
@@ -39,6 +39,8 @@ const MoviesList = () => {
     margin: "0 auto",
     borderColor: "blue"
   };
+
+  console.log(favourites);
 
   useEffect(() => {
     const fetchMovies= async (page:number)=>{

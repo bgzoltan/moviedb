@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { IMovies } from "./MoviesList";
 
 export interface IFavouritesProps {
@@ -11,21 +12,22 @@ const Favourites = ({
   setFavourites,
   movieList
 }: IFavouritesProps) => {
+
+
   const storeFavourite = () => {
-    const newFavourites = movieList.map((movie: IMovies) => {
-      return movie.original_title;
-    });
-    setFavourites([...favourites, ...newFavourites]);
-    localStorage.setItem(
-      "Favourites",
-      [...favourites, ...newFavourites].join()
+    const newFavourites = movieList.map((movie: IMovies) => 
+      movie.original_title
     );
+    setFavourites([...favourites, ...newFavourites]);
   };
 
   const emptyFavourite = () => {
-    localStorage.setItem("Favourites", "");
     setFavourites([]);
   };
+
+  useEffect(() => {
+    localStorage.setItem('favourites', JSON.stringify(favourites));
+  }, [favourites]);
 
   return (
     <div className="flex flex-col items-center">
