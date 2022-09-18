@@ -4,6 +4,7 @@
 
 @layer utilities {
   .paging-buttons {
+    width:12rem;
     color: white;
     background-color: darkblue;
     border-radius: 0.5rem;
@@ -18,6 +19,7 @@
   }
 
   .favourite-buttons {
+    width:12rem;
     color: white;
     background-color: darkblue;
     border-radius: 0.5rem;

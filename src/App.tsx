@@ -15,7 +15,7 @@ function App() {
 
   return (
     <main className="flex flex-col h-screen">
-      <header className="flex flex-col h-[20%] items-center font-bold max-h-screen box-border p-0 m-0">
+      <header className="flex flex-col lg:h-[20%] items-center font-bold max-h-screen box-border p-0 m-0">
         <h1 className="main-title">Movie Database</h1>
         <Search
           searchInput={searchInput}
@@ -24,7 +24,7 @@ function App() {
           setShowMovies={setShowMovies}
         />
       </header>
-      <section className="flex h-[80%]">
+      <section className="flex flex-col lg:flex-row lg:h-[80%]">
         <MoviesList
           searchInput={searchInput}
           page={page}
