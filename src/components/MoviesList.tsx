@@ -1,6 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import Favourites from "./Favourites";
 import MovieItem from "./MovieItem";
 import Pagination from "./Pagination";
@@ -28,12 +26,13 @@ export interface IMovies {
 const MoviesList = () => {
   const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
   const [searchInput, setSearchInput] = useState("");
+  const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading]=useState(false);
   const [favourites, setFavourites] = useState<string[]>(
     localStorage.getItem("Favourites")?.split(",") ?? []
   );
   const [showMovies, setShowMovies] = useState(false);
-  const [fetchEnabled, setFetchEnable] = useState(false);
 
   const override: CSSProperties = {
     display: "block",
@@ -41,39 +40,31 @@ const MoviesList = () => {
     borderColor: "blue"
   };
 
-  const fetchMovies = (page: number) => {
-    return axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}&language=en-US&page=1&include_adult=false`
-    );
-  };
-
-  const { isLoading, data, isError, error, refetch } = useQuery({
-    queryKey: ["posts", fetchEnabled, page],
-    queryFn: () => fetchMovies(page),
-    enabled: !!fetchEnabled
-  });
-
   useEffect(() => {
-    const enterHandler = (event: KeyboardEvent) => {
-      if (event.code === "Enter" || event.code === "NumpadEnter") {
-        event.preventDefault();
-        setFetchEnable(true);
+    const fetchMovies= async (page:number)=>{
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=${APIKey}&query=${searchInput}&page=${page}&language=en-US&include_adult=false`
+        );
+  
+        if (response.status >= 400 && response.status < 600) {
+          throw new Error("Bad response from server");
+        }
+        const data = await response.json();
+        setMovies(data.results);
         setShowMovies(true);
-      } else {
-        setFetchEnable(false);
+        setIsLoading(false);
+  
+      } catch (e) {
+        console.log(e)
       }
-    };
-    document.addEventListener("keydown", enterHandler);
-    return () => {
-      document.removeEventListener("keydown", enterHandler);
-    };
-  }, [refetch]);
-
-  if (isError) {
-    if (error instanceof Error) {
-      return <h2>Hiba történt {error.message}</h2>;
     }
-  }
+    if (showMovies){
+      fetchMovies(page);
+    }
+
+  }, [setMovies, page, searchInput, showMovies])
 
   return (
     <>
@@ -83,7 +74,7 @@ const MoviesList = () => {
           setSearchInput={setSearchInput}
           setPage={setPage}
           setShowMovies={setShowMovies}
-          setFetchEnable={setFetchEnable}
+      
         />
       </div>
 
@@ -101,7 +92,7 @@ const MoviesList = () => {
 
           {showMovies && (
             <div className="flex flex-col items-center w-full">
-              {data?.data.results.map((movie: IMovies) => (
+              {movies.map((movie: IMovies) => (
                 <div key={movie.id}>
                   <MovieItem {...movie} />
                 </div>
@@ -115,7 +106,7 @@ const MoviesList = () => {
           <Favourites
             favourites={favourites}
             setFavourites={setFavourites}
-            movieList={data?.data.results}
+            movieList={movies}
           />
         </div>
       </div>
