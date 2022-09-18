@@ -4,22 +4,24 @@ import { IMovies } from "./MoviesList";
 type FavouritesProps = {
   favourites: string[];
   setFavourites: React.Dispatch<React.SetStateAction<string[]>>;
-  movieList: IMovies[];
+  selectedMovies: string[];
+  setSelectedMovies: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const Favourites = ({
   favourites,
   setFavourites,
-  movieList
+  selectedMovies,
+  setSelectedMovies,
 }: FavouritesProps) => {
 
 
   const storeFavourite = () => {
-    const newFavourites = movieList.map((movie: IMovies) =>
-      movie.original_title
-    );
+    const newFavourites=[...selectedMovies];
+    setSelectedMovies([]);
     setFavourites([...favourites, ...newFavourites]);
   };
+
 
   const emptyFavourite = () => {
     setFavourites([]);

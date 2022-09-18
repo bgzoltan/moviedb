@@ -1,6 +1,5 @@
 import { useState, useEffect} from "react";
 
-import MovieItem from "./MovieItem";
 import Pagination from "./Pagination";
 import { CSSProperties } from "react";
 import DotLoader from "react-spinners/DotLoader";
@@ -30,10 +29,11 @@ type MoviesListProps ={
   setShowMovies: React.Dispatch<React.SetStateAction<boolean>>;
   movies:never[];
   setMovies:React.Dispatch<React.SetStateAction<never[]>>;
-  
+  selectedMovies:string[];
+  setSelectedMovies:React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const MoviesList = ({searchInput,page,setPage,showMovies,setShowMovies,movies,setMovies}:MoviesListProps) => {
+const MoviesList = ({searchInput, page, setPage, showMovies, setShowMovies, movies, setMovies, selectedMovies, setSelectedMovies}:MoviesListProps) => {
   const APIKey: string = "8d80f214b2fe7130c06b25fe5c695d25";
   const [isLoading, setIsLoading]=useState(false);
   const override: CSSProperties = {
@@ -67,6 +67,11 @@ const MoviesList = ({searchInput,page,setPage,showMovies,setShowMovies,movies,se
 
   }, [setMovies, page, searchInput, showMovies, setShowMovies])
 
+  const handleSelectMovie=(event: any) =>{
+    const newSelectedMovies=[...selectedMovies,event.target.value]
+    setSelectedMovies(newSelectedMovies);
+  }
+
   return (
     <>
       <div className="flex flex-col items-center lg:w-1/2 h-full bg-blue-200 border-solid border-black border-[3px]">
@@ -82,13 +87,13 @@ const MoviesList = ({searchInput,page,setPage,showMovies,setShowMovies,movies,se
           )}
 
           {showMovies && (
-            <div className="flex flex-col items-center w-full grow">
+            <select name='movies' size={2} multiple className="flex flex-col items-center grow w-full">
               {movies.map((movie: IMovies) => (
-                <div key={movie.id}>
-                  <MovieItem {...movie} />
-                </div>
+                <option className="text-center text-red-600 hover:bg-orange-500" value={movie.original_title} key={movie.id} onClick={handleSelectMovie}>
+                  {movie.original_title}
+                </option>
               ))}
-            </div>
+            </select>
           )}
           <Pagination page={page} setPage={setPage} />
       </div>

@@ -9,8 +9,9 @@ function App() {
   const [searchInput, setSearchInput] = useState('')
   const [page, setPage] = useState(1)
   const [showMovies, setShowMovies] = useState(false)
-  const [favourites, setFavourites] = useState<string[]>(
-    localStorage.getItem('favourites')?.split(',') ?? [],
+  const [selectedMovies, setSelectedMovies]=useState<string[]>([])
+  const [favourites, setFavourites] = useState<string[]>(JSON.parse( 
+    localStorage.getItem('favourites') || "")
   )
 
   return (
@@ -33,11 +34,14 @@ function App() {
           setShowMovies={setShowMovies}
           movies={movies}
           setMovies={setMovies}
+          selectedMovies={selectedMovies}
+          setSelectedMovies={setSelectedMovies}
         />
         <Favourites
           favourites={favourites}
           setFavourites={setFavourites}
-          movieList={movies}
+          selectedMovies={selectedMovies}
+          setSelectedMovies={setSelectedMovies}
         />
       </section>
     </main>
